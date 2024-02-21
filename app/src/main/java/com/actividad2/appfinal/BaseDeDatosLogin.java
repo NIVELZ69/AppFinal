@@ -1,10 +1,14 @@
 package com.actividad2.appfinal;
 
+import static android.app.DownloadManager.COLUMN_DESCRIPTION;
+import static android.app.DownloadManager.COLUMN_TITLE;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.sax.Element;
 
 public class BaseDeDatosLogin extends SQLiteOpenHelper {
 
@@ -21,6 +25,7 @@ public class BaseDeDatosLogin extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASSWORD = "contrasenia";
+    private static final String COLUMN_IMAGE_RESOURCE = "imagen";
 
     // Consulta de tabla
     private static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + "("
@@ -61,4 +66,36 @@ public class BaseDeDatosLogin extends SQLiteOpenHelper {
         db.close();
         return id;
     }
+
+    public void agregarElemento(long id, String title, String description, int imageResource) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_ID, id);
+        values.put(COLUMN_TITLE, title);
+        values.put(COLUMN_DESCRIPTION, description);
+        values.put(COLUMN_IMAGE_RESOURCE, imageResource);
+
+        db.insert(TABLE_NAME, null, values);
+        db.close();
+    }
+
+    public void actualizarElemento(long id, String title, String description, int imageResource) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_TITLE, title);
+        values.put(COLUMN_DESCRIPTION, description);
+        values.put(COLUMN_IMAGE_RESOURCE, imageResource);
+
+        db.update(TABLE_NAME, values, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+    public void borrarElemento(long id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
 }
