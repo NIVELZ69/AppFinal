@@ -1,11 +1,25 @@
 package com.actividad2.appfinal;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
-public class AgregarElementoFragment {
+import androidx.fragment.app.Fragment;
+
+import java.util.List;
+
+public class AgregarElementoFragment extends Fragment {
+
+    private ElementManager elementManager;
+    private List<Element> listaElementos;
+    private ElementAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,5 +61,15 @@ public class AgregarElementoFragment {
         return view;
     }
 
+    public void setElementManager(ElementManager elementManager) {
+        this.elementManager = elementManager;
+    }
 
+    public void setListaElementos(List<Element> listaElementos) {
+        this.listaElementos = listaElementos;
+    }
+
+    public void setAdapter(ElementAdapter adapter) {
+        this.adapter = adapter;
+    }
 }

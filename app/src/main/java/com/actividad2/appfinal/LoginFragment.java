@@ -53,6 +53,8 @@ public class LoginFragment extends Fragment {
                     boolean success = loginManager.login(email, password);
                     if (success) {
                         Toast.makeText(requireContext(), "Conexión exitosa", Toast.LENGTH_SHORT).show();
+                        ((MainActivity) requireActivity()).elementManager = new ElementManager(requireContext());
+                        ((MainActivity) requireActivity()).iniciarElementos();
                         ((MainActivity) requireActivity()).cambiarFragmento(new MainFragment());
                     } else {
                         Toast.makeText(requireContext(), "Email o contraseña invalidos", Toast.LENGTH_SHORT).show();

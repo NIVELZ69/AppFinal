@@ -28,4 +28,13 @@ public class Element {
     public int getImageResource() {
         return imageResource;
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

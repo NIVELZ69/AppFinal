@@ -25,15 +25,13 @@ public class MainActivity extends AppCompatActivity {
     private List<Element> listaElementos = new ArrayList<>();
     private RecyclerView recyclerView;
     private ElementAdapter adapter;
-    private ElementManager elementManager;
+    public ElementManager elementManager;
     private View loginLayout;
     private View mainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //loginLayout = LayoutInflater.from(this).inflate(R.layout.activity_login, null);
-        Log.d("MainActivity", "Prueba2");
         setContentView(R.layout.activity_main);
 
         loginFragment = new LoginFragment();
@@ -43,12 +41,13 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragmentContainer, loginFragment)
                 .commit();
 
-        loginManager = new LoginManager(this);
+        elementManager = new ElementManager(this);
+        mainFragment.setElementManager(elementManager);
 
 
         // Prueba usuario
         BaseDeDatosLogin loginBD = new BaseDeDatosLogin(this);
-        loginBD.insertUser("usario@gmail.com", "12345678");
+        loginBD.insertUser("usuario@gmail.com", "12345678");
 
     }
 
@@ -57,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragmentContainer, fragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public void iniciarElementos() {
+        AgregarElementoFragment agregarElementoFragment = new AgregarElementoFragment();
+        agregarElementoFragment.setElementManager(elementManager);
+        agregarElementoFragment.setListaElementos(listaElementos);
+        agregarElementoFragment.setAdapter(adapter);
     }
 
 }
