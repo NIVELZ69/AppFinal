@@ -21,6 +21,22 @@ public class ModificarElementoFragment extends Fragment {
     private ElementAdapter adapter;
     private long elementId;
 
+    // Listener para notificar a Mainfragment y devolver un elemento modificado
+    public interface OnUpdateElementListener {
+        void onUpdateElement(Element element);
+    }
+
+    private OnUpdateElementListener listener;
+
+    // Métodos set para el Listener y el ID del elemento
+    public void setOnUpdateElementListener(OnUpdateElementListener listener) {
+        this.listener = listener;
+    }
+
+    public void setElementId(long elementId) {
+        this.elementId = elementId;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState) {
         View view = inflater.inflate(R.layout.fragment_modificar_elemento, container, false);
@@ -52,18 +68,16 @@ public class ModificarElementoFragment extends Fragment {
                 String description = descriptionEditText.getText().toString().trim();
 
                 if (!title.isEmpty() && !description.isEmpty()) {
+                    // Obtener el userId del elemento actual
+                    long userId = getUserIdForElement(elementId);
+
                     // Actualizar el elemento en la base de datos
-                    Element updatedElement = new Element(elementId, title, description, R.drawable.placeholder_image);
+                    Element updatedElement = new Element(elementId, userId, title, description, R.drawable.placeholder_image);
                     elementManager.actualizarElemento(updatedElement);
 
-                    // Actualizar el elemento en la lista y notificar al adaptador
-                    for (Element element : listaElementos) {
-                        if (element.getId() == elementId) {
-                            element.setTitle(title);
-                            element.setDescription(description);
-                            adapter.notifyDataSetChanged();
-                            break;
-                        }
+                    // Notificar a MainFragment y devolver el elemento actualizado
+                    if (listener != null) {
+                        listener.onUpdateElement(updatedElement);
                     }
 
                     // Limpiar los EditTexts
@@ -80,6 +94,16 @@ public class ModificarElementoFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private long getUserIdForElement(long elementId) {
+        long userId = -1;
+        for (Element element : listaElementos) {
+            if (element.getId() == elementId) {
+                userId = element.getUserId();
+                break;
+            }
+        }
     }
 
     public void setElementManager(ElementManager elementManager) {

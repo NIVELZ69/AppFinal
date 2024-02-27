@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +49,15 @@ public class MainActivity extends AppCompatActivity {
         // Prueba usuario
         BaseDeDatosLogin loginBD = new BaseDeDatosLogin(this);
         loginBD.insertUser("usuario@gmail.com", "12345678");
+        loginBD.insertUser("usuario2@gmail.com", "87654321");
+
+       /* Context context = getApplicationContext();
+
+        String databaseName = "LoginBD";
+
+        context.deleteDatabase(databaseName);
+
+        */
 
     }
 
