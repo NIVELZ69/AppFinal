@@ -30,6 +30,32 @@ public class EliminarElementoFragment extends Fragment {
             elementId = args.getLong("elementId", -1);
         }
 
+        Button confirmarButton = view.findViewById(R.id.confirmButton);
+        Button cancelarButton = view.findViewById(R.id.cancelButton);
+
+        // Accion para confirmar la eliminación
+        confirmarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (elementId != -1) {
+                    // Eliminar el elemento
+                    elementManager.borrarElemento(elementId);
+                    // Notificar al adaptador
+                    adapter.notifyDataSetChanged();
+                    // Cerrar el fragmento
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                }
+            }
+        });
+
+        cancelarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cerrar el fragmento
+                requireActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
         return view;
 
     }

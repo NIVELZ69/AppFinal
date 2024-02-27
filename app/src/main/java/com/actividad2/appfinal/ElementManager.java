@@ -6,14 +6,15 @@ import java.util.List;
 
 public class ElementManager {
     private BaseDeDatosLogin loginBD;
+    private List<Element> listaElementos;
 
     public ElementManager(Context context) {
         loginBD = new BaseDeDatosLogin(context);
     }
 
     public List<Element> getElementsForCurrentUser(long userId) {
-
-        return loginBD.getElementsForUserId(userId);
+        listaElementos = loginBD.getElementsForUserId(userId);
+        return listaElementos;
     }
 
     public long agregarElemento(long userId, String title, String description, int imageResource) {
@@ -27,11 +28,15 @@ public class ElementManager {
 
         // Buscar el elemento en la lista y actualizarlos
         for (int i = 0; i < listaElementos.size(); i++) {
-            if (listaEle)
+            if (listaElementos.get(i).getId() == element.getId()) {
+                listaElementos.set(i, element);
+                break;
+            }
         }
     }
 
     public void borrarElemento(Element element) {
         loginBD.borrarElemento(element.getId());
+        listaElementos.remove(element);
     }
 }

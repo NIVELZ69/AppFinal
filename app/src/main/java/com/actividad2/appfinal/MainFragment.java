@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,36 +49,6 @@ public class MainFragment extends Fragment {
 
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainer, agregarElementoFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ModificarElementoFragment modificarElementoFragment = new ModificarElementoFragment();
-                modificarElementoFragment.setElementManager(elementManager);
-                modificarElementoFragment.setListaElementos(listaElementos);
-                modificarElementoFragment.setAdapter(adapter);
-
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, modificarElementoFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EliminarElementoFragment eliminarElementoFragment = new EliminarElementoFragment();
-                eliminarElementoFragment.setElementManager(elementManager);
-                eliminarElementoFragment.setListaElementos(listaElementos);
-                eliminarElementoFragment.setAdapter(adapter);
-
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, eliminarElementoFragment)
                         .addToBackStack(null)
                         .commit();
             }

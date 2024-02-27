@@ -67,10 +67,13 @@ public class ModificarElementoFragment extends Fragment {
                 String title = titleEditText.getText().toString().trim();
                 String description = descriptionEditText.getText().toString().trim();
 
-                if (!title.isEmpty() && !description.isEmpty()) {
-                    // Obtener el userId del elemento actual
-                    long userId = getUserIdForElement(elementId);
+                long userId = -1;
+                for (Element element : listaElementos) {
+                    userId = element.getUserId();
+                    break;
+                }
 
+                if (!title.isEmpty() && !description.isEmpty()) {
                     // Actualizar el elemento en la base de datos
                     Element updatedElement = new Element(elementId, userId, title, description, R.drawable.placeholder_image);
                     elementManager.actualizarElemento(updatedElement);
@@ -94,16 +97,6 @@ public class ModificarElementoFragment extends Fragment {
         });
 
         return view;
-    }
-
-    private long getUserIdForElement(long elementId) {
-        long userId = -1;
-        for (Element element : listaElementos) {
-            if (element.getId() == elementId) {
-                userId = element.getUserId();
-                break;
-            }
-        }
     }
 
     public void setElementManager(ElementManager elementManager) {
