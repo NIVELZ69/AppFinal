@@ -47,12 +47,6 @@ public class MainActivity extends AppCompatActivity {
         elementManager = new ElementManager(this);
         mainFragment.setElementManager(elementManager);
 
-        // Inicializar el RecyclerView y el Adapter
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ElementAdapter(listaElementos, elementManager);
-        recyclerView.setAdapter(adapter);
-
         // Prueba usuario
         BaseDeDatosLogin loginBD = new BaseDeDatosLogin(this);
         loginBD.insertUser("usuario@gmail.com", "12345678");
