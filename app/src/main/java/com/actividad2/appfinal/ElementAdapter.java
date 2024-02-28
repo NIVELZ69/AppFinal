@@ -1,5 +1,8 @@
 package com.actividad2.appfinal;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,16 @@ import java.util.List;
 public class ElementAdapter extends RecyclerView.Adapter<ElementAdapter.ViewHolder> {
     private List<Element> listaElementos;
     private ElementManager elementManager;
+    private OnEditClickListener onEditClickListener;
+    private OnDeleteClickListener onDeleteClickListener;
+
+    public interface OnEditClickListener {
+        void onEditClick(Element element);
+    }
+
+    public interface OnDeleteClickListener {
+        void onDeleteClick(Element element);
+    }
 
     public ElementAdapter(List<Element> listaElementos, ElementManager elementManager) {
         this.listaElementos = listaElementos;
@@ -38,19 +51,18 @@ public class ElementAdapter extends RecyclerView.Adapter<ElementAdapter.ViewHold
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Fragmento edición
+                Element elemento = listaElementos.get(holder.getAdapterPosition());
+                if (onEditClickListener != null) {
+                    onEditClickListener.onEditClick(element);
+                }
             }
         });
 
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int adapterPosition = holder.getAdapterPosition();
-                if (adapterPosition != RecyclerView.NO_POSITION) {
-
-                    listaElementos.remove(adapterPosition);
-                    elementManager.borrarElemento(element);
-                    notifyItemRemoved(adapterPosition);
+                if (onDeleteClickListener != null) {
+                    onDeleteClickListener.onDeleteClick(element);
                 }
             }
         });
@@ -80,4 +92,12 @@ public class ElementAdapter extends RecyclerView.Adapter<ElementAdapter.ViewHold
 
     }
 
+    public void setOnEditClickListener(OnEditClickListener listener) {
+        this.onEditClickListener = listener;
+    }
+
+    public void setOnDeleteClickListener(OnDeleteClickListener listener) {
+        this.onDeleteClickListener = listener;
+    }
 }
+

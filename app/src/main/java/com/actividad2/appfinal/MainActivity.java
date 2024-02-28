@@ -1,5 +1,7 @@
 package com.actividad2.appfinal;
 
+import static android.app.PendingIntent.getActivity;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,19 +47,16 @@ public class MainActivity extends AppCompatActivity {
         elementManager = new ElementManager(this);
         mainFragment.setElementManager(elementManager);
 
+        // Inicializar el RecyclerView y el Adapter
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new ElementAdapter(listaElementos, elementManager);
+        recyclerView.setAdapter(adapter);
 
         // Prueba usuario
         BaseDeDatosLogin loginBD = new BaseDeDatosLogin(this);
         loginBD.insertUser("usuario@gmail.com", "12345678");
         loginBD.insertUser("usuario2@gmail.com", "87654321");
-
-       /* Context context = getApplicationContext();
-
-        String databaseName = "LoginBD";
-
-        context.deleteDatabase(databaseName);
-
-        */
 
     }
 
@@ -67,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
                 .addToBackStack(null)
                 .commit();
     }
-
     public void iniciarElementos() {
         AgregarElementoFragment agregarElementoFragment = new AgregarElementoFragment();
         agregarElementoFragment.setElementManager(elementManager);
