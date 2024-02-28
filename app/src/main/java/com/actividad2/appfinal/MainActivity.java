@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         // Prueba usuario
         BaseDeDatosLogin loginBD = new BaseDeDatosLogin(this);
         loginBD.insertUser("usuario@gmail.com", "12345678");
+
+    }
 
     public void cambiarFragmento(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
