@@ -22,21 +22,14 @@ public class MainFragment extends Fragment {
     private RecyclerView recyclerView;
     private ElementAdapter adapter;
     private ElementManager elementManager;
-    private LoginManager loginManager;
     private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        elementManager = new ElementManager(requireContext());
-        loginManager = new LoginManager(requireContext());
-
-        long userId = loginManager.getCurrentUserId();
-        listaElementos = elementManager.getElementsForCurrentUser(userId);
-
         Button addButton = view.findViewById(R.id.addButton);
-        Button editButton = view.findViewById(R.id.editButton);
+        Button modifyButton = view.findViewById(R.id.modifyButton);
         Button deleteButton = view.findViewById(R.id.deleteButton);
 
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -49,6 +42,36 @@ public class MainFragment extends Fragment {
 
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainer, agregarElementoFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        modifyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ModificarElementoFragment modificarElementoFragment = new ModificarElementoFragment();
+                modificarElementoFragment.setElementManager(elementManager);
+                modificarElementoFragment.setListaElementos(listaElementos);
+                modificarElementoFragment.setAdapter(adapter);
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, modificarElementoFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EliminarElementoFragment eliminarElementoFragment = new EliminarElementoFragment();
+                eliminarElementoFragment.setElementManager(elementManager);
+                eliminarElementoFragment.setListaElementos(listaElementos);
+                eliminarElementoFragment.setAdapter(adapter);
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, eliminarElementoFragment)
                         .addToBackStack(null)
                         .commit();
             }

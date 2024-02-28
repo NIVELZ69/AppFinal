@@ -21,6 +21,9 @@ public class ElementManager {
         loginBD.agregarElemento(userId, title, description, imageResource);
 
         return userId;
+
+    public void agregarElemento(Element element) {
+        loginBD.agregarElemento(element.getId(), element.getTitle(), element.getDescription(), element.getImageResource());
     }
 
     public void actualizarElemento(Element element)  {
@@ -33,6 +36,7 @@ public class ElementManager {
                 break;
             }
         }
+
     }
 
     public void borrarElemento(long elementId) {

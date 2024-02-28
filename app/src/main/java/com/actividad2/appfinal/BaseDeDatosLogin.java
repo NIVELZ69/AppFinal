@@ -1,13 +1,13 @@
 package com.actividad2.appfinal;
 
+import static android.app.DownloadManager.COLUMN_DESCRIPTION;
+import static android.app.DownloadManager.COLUMN_TITLE;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BaseDeDatosLogin extends SQLiteOpenHelper {
 
@@ -26,8 +26,6 @@ public class BaseDeDatosLogin extends SQLiteOpenHelper {
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASSWORD = "contrasenia";
     private static final String COLUMN_USER_ID = "id_usuario";
-    private static final String COLUMN_TITLE = "titulo";
-    private static final String COLUMN_DESCRIPTION = "descripcion";
     private static final String COLUMN_IMAGE_RESOURCE = "imagen";
 
     // Consulta de tabla
@@ -61,10 +59,6 @@ public class BaseDeDatosLogin extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void deleteDatabase(Context context) {
-        context.deleteDatabase(DATABASE_NAME);
-    }
-
     public boolean login (String email, String contrasenia) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_USERS, new String[]{COLUMN_ID}, COLUMN_EMAIL + "=? AND " + COLUMN_PASSWORD + "=?",
@@ -83,54 +77,6 @@ public class BaseDeDatosLogin extends SQLiteOpenHelper {
         db.close();
         return id;
     }
-
-    public Long getUserId(String email) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query("Usuario", new String[]{"id"}, "email=?", new String[]{email}, null, null, null);
-        Long userId = null;
-
-        if (cursor != null && cursor.moveToFirst()) {
-            int columnIndex = cursor.getColumnIndex("id");
-            if (columnIndex != -1) {
-                userId = cursor.getLong(columnIndex);
-            }
-            cursor.close();
-        }
-
-        return userId;
-    }
-
-    public List<Element> getElementsForUserId(long userId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        String query = "SELECT * FROM " + TABLE_ELEMENTS + " WHERE " + COLUMN_USER_ID + " = ?";
-        String[] selectionArgs = {String.valueOf(userId)};
-
-        Cursor cursor = db.rawQuery(query, selectionArgs);
-
-        List<Element> elements = new ArrayList<>();
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                long id = cursor.getLong(cursor.getColumnIndex(COLUMN_ID));
-                String title = cursor.getString(cursor.getColumnIndex(COLUMN_TITLE));
-                String description = cursor.getString(cursor.getColumnIndex(COLUMN_DESCRIPTION));
-                int imageResource = cursor.getInt(cursor.getColumnIndex(COLUMN_IMAGE_RESOURCE));
-
-                Element element = new Element(id, userId, title, description, imageResource);
-                elements.add(element);
-            } while (cursor.moveToNext());
-        }
-
-        if (cursor != null) {
-            cursor.close();
-        }
-
-        db.close();
-
-        return elements;
-    }
-
-
 
     public void agregarElemento(long userId, String title, String description, int imageResource) {
         SQLiteDatabase db = this.getWritableDatabase();
