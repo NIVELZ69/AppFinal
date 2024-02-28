@@ -21,6 +21,7 @@ public class ElementAdapter extends RecyclerView.Adapter<ElementAdapter.ViewHold
     private ElementManager elementManager;
     private MainActivity activity;
     private OnEditElementListener editListener;
+    private long elementId = -1;
 
     public ElementAdapter(List<Element> listaElementos, ElementManager elementManager, MainActivity activity) {
         this.listaElementos = listaElementos;
@@ -28,7 +29,7 @@ public class ElementAdapter extends RecyclerView.Adapter<ElementAdapter.ViewHold
         this.activity = activity;
     }
 
-    public interface OneditElementListener {
+    public interface OnEditElementListener {
         void onEditElement(Element element);
     }
 
@@ -50,6 +51,9 @@ public class ElementAdapter extends RecyclerView.Adapter<ElementAdapter.ViewHold
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Obtener el ID del elemento en la posición adapterPosition
+                elementId = element.getId();
+
                 // Crear el fragmento de eliminación
                 EliminarElementoFragment fragment = new EliminarElementoFragment();
                 Bundle args = new Bundle();
@@ -58,7 +62,7 @@ public class ElementAdapter extends RecyclerView.Adapter<ElementAdapter.ViewHold
 
                 // Establecer el manager y el adaptador
                 fragment.setElementManager(elementManager);
-                fragment.setActivity(activity); // Se debe cambiar a setActivity(activity)
+                fragment.setActivity(activity);
 
                 // Abrir el fragmento de eliminación
                 activity.getSupportFragmentManager().beginTransaction()
@@ -71,6 +75,8 @@ public class ElementAdapter extends RecyclerView.Adapter<ElementAdapter.ViewHold
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                elementId = element.getId();
+
                 if (editListener != null) {
                     editListener.onEditElement(element);
                 }
@@ -84,7 +90,7 @@ public class ElementAdapter extends RecyclerView.Adapter<ElementAdapter.ViewHold
                 int adapterPosition = holder.getAdapterPosition();
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     listaElementos.remove(adapterPosition);
-                    elementManager.borrarElemento(element);
+                    elementManager.borrarElemento(elementId);
                     notifyItemRemoved(adapterPosition);
                 }
             }

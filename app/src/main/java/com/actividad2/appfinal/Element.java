@@ -39,4 +39,7 @@ public class Element {
         this.description = description;
     }
 
+    public long getUserId() {
+        return userId;
+    }
 }

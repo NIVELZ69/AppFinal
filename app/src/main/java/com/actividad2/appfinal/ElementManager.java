@@ -35,8 +35,7 @@ public class ElementManager {
         }
     }
 
-    public void borrarElemento(Element element) {
-        loginBD.borrarElemento(element.getId());
-        listaElementos.remove(element);
+    public void borrarElemento(long elementId) {
+        loginBD.borrarElemento(elementId);
     }
 }

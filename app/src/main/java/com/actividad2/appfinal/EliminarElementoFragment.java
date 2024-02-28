@@ -17,6 +17,11 @@ public class EliminarElementoFragment extends Fragment {
     private List<Element> listaElementos;
     private ElementAdapter adapter;
     private long elementId;
+    private MainActivity activity;
+
+    public void setActivity(MainActivity activity) {
+        this.activity = activity;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

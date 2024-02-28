@@ -56,7 +56,7 @@ public class MainFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new ElementAdapter(listaElementos, elementManager);
+        adapter = new ElementAdapter(listaElementos, elementManager, (MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
 
         return view;
