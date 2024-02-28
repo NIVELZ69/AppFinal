@@ -25,9 +25,13 @@ public class AgregarElementoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_agregar_elemento, container, false);
 
+        elementManager = new ElementManager(requireContext());
+
         EditText titleEditText = view.findViewById(R.id.titleEditText);
         EditText descriptionEditText = view.findViewById(R.id.descriptionEditText);
         Button addButton = view.findViewById(R.id.addButton);
+
+        LoginManager loginManager = new LoginManager(requireContext());
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,12 +40,15 @@ public class AgregarElementoFragment extends Fragment {
                 String description = descriptionEditText.getText().toString().trim();
 
                 if (!title.isEmpty() && !description.isEmpty()) {
-                    // Crear un nuevo Element y agregarlo a la base de datos
-                    long id = System.currentTimeMillis(); // Podemos usar el tiempo actual como ID
-                    Element newElement = new Element(id, title, description, R.drawable.placeholder_image);
-                    elementManager.agregarElemento(newElement);
+                    // Obtener el ID del usuario actual
+                    long userId = loginManager.getCurrentUserId();
 
-                    // Notificar al adaptador que se ha insertado un nuevo elemento
+                    // Crear un nuevo Element y agregarlo a la base de datos
+                    long id = System.currentTimeMillis();
+                    Element newElement = new Element(id, userId, title, description, R.drawable.placeholder_image);
+                    elementManager.agregarElemento(userId, title, description, R.drawable.placeholder_image);
+
+                    // Notificar al adaptador que se ha insertado un nuevo elemnto
                     listaElementos.add(newElement);
                     adapter.notifyItemInserted(listaElementos.size() - 1);
 
